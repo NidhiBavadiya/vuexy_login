@@ -11,7 +11,7 @@ const router = new VueRouter({
   },
   routes: [
     {
-      path: '/',
+      path: '/home',
       name: 'home',
       component: () => import('@/views/Home.vue'),
       meta: {
@@ -24,22 +24,22 @@ const router = new VueRouter({
         ],
       },
     },
+    // {
+    //   path: '/second-page',
+    //   name: 'second-page',
+    //   component: () => import('@/views/SecondPage.vue'),
+    //   meta: {
+    //     pageTitle: 'Second Page',
+    //     breadcrumb: [
+    //       {
+    //         text: 'Second Page',
+    //         active: true,
+    //       },
+    //     ],
+    //   },
+    // },
     {
-      path: '/second-page',
-      name: 'second-page',
-      component: () => import('@/views/SecondPage.vue'),
-      meta: {
-        pageTitle: 'Second Page',
-        breadcrumb: [
-          {
-            text: 'Second Page',
-            active: true,
-          },
-        ],
-      },
-    },
-    {
-      path: '/login',
+      path: '/',
       name: 'login',
       component: () => import('@/views/Login.vue'),
       meta: {

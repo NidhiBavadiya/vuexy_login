@@ -51,7 +51,7 @@
           <validation-observer ref="loginValidation">
             <b-form
               class="auth-login-form mt-2"
-              @submit.prevent
+              @submit.prevent=" validationForm"
             >
               <!-- email -->
               <b-form-group
@@ -69,6 +69,7 @@
                     :state="errors.length > 0 ? false:null"
                     name="login-email"
                     placeholder="john@example.com"
+                    required
                   />
                   <small class="text-danger">{{ errors[0] }}</small>
                 </validation-provider>
@@ -99,6 +100,7 @@
                       :type="passwordFieldType"
                       name="login-password"
                       placeholder="············"
+                      required
                     />
                     <b-input-group-append is-text>
                       <feather-icon
@@ -128,8 +130,8 @@
                 type="submit"
                 variant="primary"
                 block
-                @click="validationForm"
               >
+                <!-- @click="validationForm" -->
                 Sign in
               </b-button>
             </b-form>
@@ -220,15 +222,27 @@ export default {
   data() {
     return {
       status: '',
-      password: '',
-      userEmail: '',
+      password: '',//'mitchellS@12345',
+      userEmail: '',//'mitchell-admin1@gmail.com',
       sideImg: require('@/assets/images/pages/login-v2.svg'),
       // validation rulesimport store from '@/store/index'
       required,
       email,
     }
   },
-  computed: {
+
+  //valid token then redirect in home page
+  mounted() {
+      let token = JSON.parse( localStorage.getItem('token') );
+      console.log(token);
+          if (token) {
+            return this.$router.push("/home");
+          } else {
+            return this.$router.push('/');
+          }
+   },
+  
+  computed: { 
     passwordToggleIcon() {
       return this.passwordFieldType === 'password' ? 'EyeIcon' : 'EyeOffIcon'
     },
@@ -243,26 +257,33 @@ export default {
   },
   methods: {
     validationForm() {
-      // this.$refs.loginValidation.validate().then(success => {
-      //   if (success) {
-      //     this.$toast({
-      //       component: ToastificationContent,
-      //       props: {
-      //         title: 'Form Submitted',
-      //         icon: 'EditIcon',
-      //         variant: 'success',
-      //       },
-      //     })
-      //   }
-      // }) 
+      this.$refs.loginValidation.validate().then(success => {
+        if (success) {
+          this.$toast({
+            component: ToastificationContent,
+            props: {
+              title: 'login successfully',
+              icon: 'EditIcon',
+              variant: 'success',
+            },
+          })
+           this.$router.push("/home")
+        }
+      }) 
+//declare variable store the email & password
+   let input = {'email':"mitchell-admin1@gmail.com",'password':"mitchellS@12345"}
+    //  let input = {'email':this.userEmail,'password':this.password}
 
-   let input = {'email':this.userEmail,'password':this.password}
 
+//axios function for call API
 
-   axios.post("https://zignuts.dev/es-summer-quote-backend/api/v1/login",input)
-    .then(response =>
-    
-   console.log(response))
+    axios.post("https://zignuts.dev/es-summer-quote-backend/api/v1/login", input)
+    .then(response => {
+       console.log(response);
+          console.log(response.data.data.token)
+         localStorage.setItem( 'token', JSON.stringify(response.data.data.token) );
+      }
+    )
     .catch(error => {
       this.errorMessage = error.message;
       console.error("There was an error!", error);

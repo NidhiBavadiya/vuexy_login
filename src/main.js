@@ -5,8 +5,8 @@ import VueCompositionAPI from '@vue/composition-api'
 import router from './router'
 import store from './store'
 import App from './App.vue'
-import axios from 'axios'
-import VueAxios from 'vue-axios'
+// import axios from 'axios'
+// import VueAxios from 'vue-axios'
 
 
 // Global Components
@@ -19,7 +19,7 @@ import '@/libs/toastification'
 // BSV Plugin Registration
 Vue.use(ToastPlugin)
 Vue.use(ModalPlugin)
-Vue.use(VueAxios, axios)
+// Vue.use(VueAxios, axios)
 
 // Composition API
 Vue.use(VueCompositionAPI)
