@@ -222,8 +222,8 @@ export default {
   data() {
     return {
       status: '',
-      password: '',//'mitchellS@12345',
-      userEmail: '',//'mitchell-admin1@gmail.com',
+      password:'mitchellS@12345',
+      userEmail:'mitchell-admin1@gmail.com',
       sideImg: require('@/assets/images/pages/login-v2.svg'),
       // validation rulesimport store from '@/store/index'
       required,
@@ -235,12 +235,13 @@ export default {
   mounted() {
       let token = JSON.parse( localStorage.getItem('token') );
       console.log(token);
-          if (token) {
-            return this.$router.push("/home");
-          } else {
-            return this.$router.push('/');
-          }
-   },
+      if(token){
+        this.$router.push('/home')
+      }else{
+        this.$router.push('/')
+      }
+  
+    },
   
   computed: { 
     passwordToggleIcon() {
@@ -259,36 +260,33 @@ export default {
     validationForm() {
       this.$refs.loginValidation.validate().then(success => {
         if (success) {
-          this.$toast({
-            component: ToastificationContent,
-            props: {
-              title: 'login successfully',
-              icon: 'EditIcon',
-              variant: 'success',
-            },
-          })
-           this.$router.push("/home")
-        }
-      }) 
-//declare variable store the email & password
-   let input = {'email':"mitchell-admin1@gmail.com",'password':"mitchellS@12345"}
-    //  let input = {'email':this.userEmail,'password':this.password}
-
-
-//axios function for call API
-
-    axios.post("https://zignuts.dev/es-summer-quote-backend/api/v1/login", input)
-    .then(response => {
-       console.log(response);
-          console.log(response.data.data.token)
-         localStorage.setItem( 'token', JSON.stringify(response.data.data.token) );
-      }
-    )
-    .catch(error => {
-      this.errorMessage = error.message;
-      console.error("There was an error!", error);
-    });
-    },
+          //if sucess then first call API
+          let input = {'email':"mitchell-admin1@gmail.com",'password':"mitchellS@12345"}
+           //axios function for call API
+          axios.post("https://zignuts.dev/es-summer-quote-backend/api/v1/login", input)
+          .then(response => {
+              console.log(response);
+              console.log(response.data.data.token)
+              localStorage.setItem( 'token', JSON.stringify(response.data.data.token) );
+              // ----
+              // toast massage login success fully
+              this.$toast({
+                component: ToastificationContent,
+                props: {
+                  title: 'login successfully',
+                  icon: 'EditIcon',
+                  variant: 'success',
+                },
+              })
+              // ----then push home page
+              this.$router.push("/home")
+            }).catch(error => {
+            this.errorMessage = error.message;
+            console.error("There was an error!", error);
+          });
+        } 
+      })
+    } 
   },
 }
 </script>
