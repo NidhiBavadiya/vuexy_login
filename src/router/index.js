@@ -12,28 +12,28 @@ const router = new VueRouter({
   },
   routes: [
     {
-      path: '/home',
-      name: 'home',
-      component: () => import('@/views/Home.vue'),
+      path: '/dashboard',
+      name: 'Dashboard',
+      component: () => import('@/views/DashBoard.vue'),
       meta: {
-        pageTitle: 'Home',
+        pageTitle: 'DashBoard',
         breadcrumb: [
           {
-            text: 'Home',
+            text: 'DashBoard',
             active: true,
           },
         ],
       },
     },
     {
-      path: '/second-page',
-      name: 'second-page',
-      component: () => import('@/views/SecondPage.vue'),
+      path: '/meals',
+      name: 'Meals',
+      component: () => import('@/views/Meals.vue'),
       meta: {
-        pageTitle: 'Second Page',
+        pageTitle: 'Meals',
         breadcrumb: [
           {
-            text: 'Second Page',
+            text: 'Meals',
             active: true,
           },
         ],
@@ -59,6 +59,20 @@ const router = new VueRouter({
       path: '*',
       redirect: 'error-404',
     },
+
+    //
+// {
+//   path: '/edit/:id',
+//   name: 'EditForm',
+//   component: () => import('../components/EditForm.vue'),
+// },
+// {
+//   path: '/add',
+//   name: 'EditForm',
+//   component: () => import('../components/AddForm.vue'),
+// },
+
+    // ------
   ],
 })
 

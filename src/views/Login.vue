@@ -222,8 +222,8 @@ export default {
   data() {
     return {
       status: '',
-      password:'mitchellS@12345',
-      userEmail:'mitchell-admin1@gmail.com',
+      password:"mitchellS@12345",//'mitchellS@12345',
+      userEmail:"mitchell-admin1@gmail.com",//'mitchell-admin1@gmail.com',
       sideImg: require('@/assets/images/pages/login-v2.svg'),
       // validation rulesimport store from '@/store/index'
       required,
@@ -232,15 +232,9 @@ export default {
   },
 
   //valid token then redirect in home page
-  mounted() {
-      let token = JSON.parse( localStorage.getItem('token') );
+  mounted(){
+      let token = JSON.parse( localStorage.getItem('token'));
       console.log(token);
-      if(token){
-        this.$router.push('/home')
-      }else{
-        this.$router.push('/')
-      }
-  
     },
   
   computed: { 
@@ -262,12 +256,17 @@ export default {
         if (success) {
           //if sucess then first call API
           let input = {'email':"mitchell-admin1@gmail.com",'password':"mitchellS@12345"}
+         
            //axios function for call API
-          axios.post("https://zignuts.dev/es-summer-quote-backend/api/v1/login", input)
+          axios.post("https://zignuts.dev/es-summer-quote-backend/api/v1/login",input)
           .then(response => {
               console.log(response);
               console.log(response.data.data.token)
-              localStorage.setItem( 'token', JSON.stringify(response.data.data.token) );
+              console.log(response.data.data.token.replace('"',''));
+              let obj={
+                token:response.data.data.token,
+              }
+              localStorage.setItem( 'token', JSON.stringify(obj));
               // ----
               // toast massage login success fully
               this.$toast({
@@ -279,7 +278,7 @@ export default {
                 },
               })
               // ----then push home page
-              this.$router.push("/home")
+              this.$router.push("/dashboard")
             }).catch(error => {
             this.errorMessage = error.message;
             console.error("There was an error!", error);

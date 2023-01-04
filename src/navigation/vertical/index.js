@@ -1,12 +1,12 @@
 export default [
   {
-    title: 'Home',
-    route: 'home',
+    title: 'Dashboard',
+    route: 'Dashboard',
     icon: 'HomeIcon',
   },
   {
-    title: 'Second Page',
-    route: 'second-page',
+    title: 'Meals',
+    route: 'Meals',
     icon: 'FileIcon',
   },
 ]

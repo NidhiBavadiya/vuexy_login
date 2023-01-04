@@ -5,9 +5,9 @@ import VueCompositionAPI from '@vue/composition-api'
 import router from './router'
 import store from './store'
 import App from './App.vue'
-// import axios from 'axios'
-// import VueAxios from 'vue-axios'
 
+// mixin
+import './mixins/mixin'
 
 // Global Components
 import './global-components'
@@ -15,6 +15,9 @@ import './global-components'
 // 3rd party plugins
 import '@/libs/portal-vue'
 import '@/libs/toastification'
+
+// axios 
+import './axios/index'
 
 // BSV Plugin Registration
 Vue.use(ToastPlugin)
