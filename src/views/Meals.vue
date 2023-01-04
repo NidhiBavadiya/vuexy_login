@@ -4,6 +4,8 @@
       :isActive="SideForm"
       :items="items"
       @closeSidebar="SideForm = !SideForm"
+      :formHeading="heading"
+      :geteditvalue="geteditvalue"
     ></addForm>
     <b-card no-body class="mb-0">
       <div class="m-2">
@@ -23,17 +25,15 @@
 
       <b-table ref="refUserListTable" :items="items" :fields="fields">
         <template #cell(actions)="data">
-          
           <!--="data" -->
           <!-- <router-link :to="'/edit/'+ data.item.id">  -->
           <feather-icon
             class="ml-1 cursor-pointer text-success"
             icon="Edit2Icon"
             size="16"
-            @click="EditData()"
+            @click="EditData(data.item.id)"
           />
           <!-- </router-link> -->
-
           <feather-icon
             class="ml-1 cursor-pointer text-danger"
             icon="Trash2Icon"
@@ -123,75 +123,79 @@ export default {
           label: "Margin",
         },
       ],
-      // EditedValue : {
-      //   restaurant_name:'' ,
-      //   type: '',
-      //   description: '',
-      //   option:'',
-      //   AED_cost: null,
-      //   USD_cost: null,
-      //   cost_unit:null,
-      //   margin: null,
-      //   priceUnit:null,
-      //   USD_price:null,
-      //   AED_price: null,
-      // },
       items: [],
       SideForm: false,
+      heading: null,
+      btnname: null,
+      geteditvalue: [],
     };
   },
 
   mounted() {
-  this.ListApi();
+    this.ListApi();
   },
 
   methods: {
+    //table list API ....
     ListApi() {
-      // let token = localStorage.getItem('token');
       console.log(this.token);
       // POST request using axios with error handling
-      this.axios.defaults.headers.common["Authorization"] ="Bearer " + this.token;
-      this.axios.post("meal/list")
+      this.axios.defaults.headers.common["Authorization"] =
+        "Bearer " + this.token;
+      this.axios
+        .post("meal/list")
         .then((response) => {
-          console.log("response.data",response.data.data.meals);
+          console.log("response_list_data", response.data.data.meals);
           this.items = response.data.data.meals;
-         
         })
         .catch((error) => {
           this.errorMessage = error.message;
           console.error("There was an error!", error);
         });
     },
-
+    //delete row API...
     deleteData(index) {
-      // this.items.splice(index,1);
       console.log(index);
-      this.axios.defaults.headers.common["Authorization"] ="Bearer " + this.token;
-      this.axios.post("meal/delete",{'id' :index})
+      this.axios.defaults.headers.common["Authorization"] =
+        "Bearer " + this.token;
+      this.axios
+        .post("meal/delete", { id: index })
         .then((response) => {
-          console.log("response.data",response.data.data.meals);
+          console.log("response.data", response.data.data.meals);
         })
         .catch((error) => {
           this.errorMessage = error.message;
           console.error("There was an error!", error);
         });
     },
-
+    //Edit Data API...
+    EditData(singleMeal) {
+      this.SideForm = !this.SideForm;
+      this.heading = "Edit Meals";
+      console.log("edit", singleMeal);
+      let id = singleMeal;
+      //get data for edit (get API)
+      console.log("Get_Edit_Data");
+      this.axios.defaults.headers.common["Authorization"] =
+        "Bearer " + this.token;
+      this.axios
+        .get("meal/get/" + id)
+        .then((response) => {
+          // console.log("response edit data",response.data.data.meal)
+          this.geteditvalue = response.data.data.meal;
+          // console.log("main Edit value",this.geteditvalue );
+        })
+        .catch((error) => {
+          this.errorMessage = error.message;
+          console.error("There was an error!", error);
+        });
+    },
+    //add meals form open function
     openform() {
+      this.geteditvalue=null;
       this.SideForm = !this.SideForm;
-    },
-    EditData(index) {
-      this.SideForm = !this.SideForm;
-      console.log(index);
-      this.axios.defaults.headers.common["Authorization"] = "Bearer " + this.token;
-      this.axios.post("meal/update",{'id' :index})
-        .then((response) => {
-          console.log("response.data",response.data.data.meals);
-        })
-        .catch((error) => {
-          this.errorMessage = error.message;
-          console.error("There was an error!", error);
-        });
+      this.heading = "Add Meals";
+      this.btnname = "Meals";
     },
   },
 };

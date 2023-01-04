@@ -20,7 +20,7 @@
             py-1
           "
         >
-          <h5 class="mb-0">Add Meals</h5>
+          <h5 class="mb-0">{{ formHeading }}</h5>
 
           <feather-icon
             class="ml-1 cursor-pointer"
@@ -34,101 +34,112 @@
           <b-form>
             <b-row>
               <!-- Field: Restaurant Name* -->
-              <b-col cols="12" md="6">
+              <b-col cols="12">
                 <b-form-group label=" Restaurant Name*" label-for="username">
-                  <b-form-input id="username" v-model="restaurant_Name" />
+                  <b-form-input
+                    id="username"
+                    value="fhnj"
+                    v-model="restaurant_Name"
+                    placeholder=" Restaurant Name"
+                  />
                 </b-form-group>
               </b-col>
 
               <!-- Field: Type -->
-              <b-col cols="12" md="6">
+              <b-col cols="12">
                 <b-form-group label="Type" label-for="Type">
-                  <b-form-input id="Type" v-model="type" />
+                  <b-form-input id="Type" v-model="type" placeholder="type" />
                 </b-form-group>
               </b-col>
-              <!--  -->
-              <!-- <b-col cols="12" md="4">
-                <b-form-group label="Status" label-for="type">
-                  <v-select
-                    v-model="Type"
-                    :options="type"
-                    input-id="type"
-                  />
-                </b-form-group>
-              </b-col> -->
-              <!--  -->
 
               <!-- Field: Description -->
-              <b-col cols="12" md="6">
+              <b-col cols="12">
                 <b-form-group label="Description" label-for="username">
-                  <b-form-input id="username" v-model="description" :value="description" />
-                </b-form-group>
-              </b-col>
-              <!-- Field: Option -->
-              <b-col cols="12" md="6">
-                <b-form-group label="Option" label-for="username">
-                  <b-form-input id="username" v-model="option" />
+                  <b-form-input
+                    id="username"
+                    placeholder="Description"
+                    v-model="description"
+                    :value="description"
+                  />
                 </b-form-group>
               </b-col>
 
               <!-- Field: Cost AED(Per Person/Day)* -->
-              <b-col cols="12" md="4">
+              <b-col cols="12">
                 <b-form-group
                   label="Cost AED(Per Person/Day)*"
                   label-for="username"
                 >
-                  <b-form-input id="username" v-model="costAED" />
+                  <b-form-input
+                    id="username"
+                    v-model="costAED"
+                    placeholder=" Cost AED"
+                  />
                 </b-form-group>
               </b-col>
 
               <!-- Field: Cost USD(Per Person/Day)* -->
-              <b-col cols="12" md="4">
+              <b-col cols="12">
                 <b-form-group
                   label="Cost USD(Per Person/Day)"
                   label-for="full-name"
                 >
-                  <b-form-input id="full-name" v-model="costUSD" />
+                  <b-form-input
+                    id="full-name"
+                    v-model="costUSD"
+                    placeholder="Cost USD"
+                  />
                 </b-form-group>
               </b-col>
 
               <!-- Field: Cost Unit* -->
-              <b-col cols="12" md="4">
+              <b-col cols="12" md="6">
                 <b-form-group label="Cost Unit*" label-for="email">
-                  <b-form-input id="email" type="email" v-model="costUnit" />
+                  <b-form-input
+                    id="email"
+                    type="email"
+                    v-model="costUnit"
+                    placeholder=" Cost Unit"
+                  />
                 </b-form-group>
               </b-col>
 
               <!-- Field: Margin* -->
-              <b-col cols="12" md="4">
+              <b-col cols="12" md="6">
                 <b-form-group label="Margin*" label-for="full-name">
-                  <b-form-input id="full-name" v-model="margin" />
-                </b-form-group>
-              </b-col>
-
-              <!-- Field: Price Unit* -->
-              <b-col cols="12" md="4">
-                <b-form-group label=" Price Unit*" label-for="full-name">
-                  <b-form-input id="full-name" v-model="priceUnit" />
+                  <b-form-input
+                    id="full-name"
+                    v-model="margin"
+                    placeholder=" Margin"
+                  />
                 </b-form-group>
               </b-col>
 
               <!-- Field: Price USD(Per Person/Day)* -->
-              <b-col cols="12" md="4">
+              <b-col cols="12">
                 <b-form-group
                   label="Price USD(Per Person/Day)*"
                   label-for="company"
                 >
-                  <b-form-input id="company" v-model="priceUSD" />
+                  <b-form-input
+                    id="company"
+                    v-model="priceUSD"
+                    placeholder="Price USD"
+                  />
                 </b-form-group>
               </b-col>
 
               <!-- Field: Price AED(Per Person/Day)* -->
-              <b-col cols="12" md="4">
+              <b-col cols="12">
                 <b-form-group
                   label=" Price AED(Per Person/Day)*"
                   label-for="username"
                 >
-                  <b-form-input id="username" v-model="priceAED" />
+                  <b-form-input
+                    id="username"
+                    v-model="priceAED"
+                    placeholder="Price AED"
+                  />
                 </b-form-group>
               </b-col>
             </b-row>
@@ -136,8 +147,11 @@
           <!-- Field: button -->
           <b-row>
             <b-col>
-              <b-button variant="primary" type="submit" @click="AddValue()">
-                <span class="text-nowrap">Meals</span>
+              <b-button variant="primary" type="submit" v-if="id"  @click="EditValue()">
+                <span class="text-nowrap">Edit Meal</span>
+              </b-button>
+              <b-button variant="primary" type="submit" id="addMeal" v-else @click="AddValue()">
+                <span class="text-nowrap">Add Meal</span>
               </b-button>
 
               <b-button
@@ -167,8 +181,9 @@ import {
   BForm,
   BCard,
   BSidebar,
+  // BFormSelect
 } from "bootstrap-vue";
-import vSelect from 'vue-select'
+
 export default {
   components: {
     BButton,
@@ -181,26 +196,26 @@ export default {
     BForm,
     BCard,
     BSidebar,
-    vSelect
+    // BFormSelect
   },
   props: ["items"],
   data() {
     return {
-      restaurant_Name: "",
-      type: "",
-      description: "",
-      option: "",
-      costAED: "",
-      costUSD: "",
-      costUnit: "",
-      margin: "",
-      priceUnit: "",
-      priceUSD: "",
-      priceAED: "",
-      id: "",
+      restaurant_Name: "", //"foodies restaurant",
+      type: "", // "breakfast",
+      description: "", //"we serve delicious food",
+      costAED: "", //"3.67",
+      costUSD: "", //"1",
+      costUnit: "", //"per_person",
+      margin: "", //"23",
+      priceUSD: "", //"123456788.673223488",
+      priceAED: "", //"17.02",
+      id:  null,
 
       formcard: true,
-      // type:['lunch','dinner']
+      selected: null,
+      EditButton:false,
+      Addbutton:true,
     };
   },
   props: {
@@ -209,27 +224,104 @@ export default {
       type: Boolean,
       required: true,
     },
+    formHeading: String,
+    geteditvalue: {
+      default: null,
+    },
+  },
+  watch: {
+    geteditvalue(val) {
+      if (val) {
+        this.id=val.id;
+        this.restaurant_Name = val.restaurant_name,
+          this.type = val.type,
+          this.description = val.description,
+          this.costAED = val.AED_cost,
+          this.costUSD = val.USD_cost,
+          this.costUnit = val.cost_unit,
+          this.priceUSD = val.USD_price,
+          this.priceAED = val.AED_price,
+          this.margin = val.margin;
+      } else {
+          this.id = null;
+          this.restaurant_Name = null;
+          this.type = null;
+          this.description = null;
+          this.costAED = null;
+          this.costUSD = null;
+          this.costUnit = null;
+          this.priceUSD = null;
+          this.priceAED = null;
+          this.margin = null;
+        console.log("add meals");
+      }
+    },
   },
   methods: {
+    //add value API
     AddValue: function () {
+      console.log("hello");
+      console.log(this.token);
+      // document.getElementById('addMeal').classList.add('d-block')
+      // POST request using axios with error handling
+      this.axios.defaults.headers.common["Authorization"] =
+        "Bearer " + this.token;
+      console.log("valid", this.token);
       let mealvalue = {
         restaurant_name: this.restaurant_Name,
         type: this.type,
         description: this.description,
-        option: this.option,
         AED_cost: this.costAED,
         USD_cost: this.costUSD,
         cost_unit: this.costUnit,
         margin: this.margin,
-        priceUnit: this.priceUnit,
         USD_price: this.priceUSD,
         AED_price: this.priceAED,
         id: this.id,
       };
       console.log(mealvalue);
-      this.items.push(mealvalue);
+      this.axios
+        .post("meal/create", mealvalue)
+        .then((response) => {
+          console.log("response.data", response.data.data.meal);
+        })
+        .catch((error) => {
+          this.errorMessage = error.message;
+          console.error("There was an error!", error);
+        });
       this.$emit("closeSidebar");
     },
+//edit button function
+    EditValue() {
+      console.log("update API");
+      this.axios.defaults.headers.common["Authorization"] ="Bearer " + this.token;
+      console.log("edit_valid_token", this.token);
+
+      let mealUpdate = {
+        restaurant_name: this.restaurant_Name,
+        type: this.type,
+        description: this.description,
+        AED_cost: this.costAED,
+        USD_cost: this.costUSD,
+        cost_unit: this.costUnit,
+        margin: this.margin,
+        USD_price: this.priceUSD,
+        AED_price: this.priceAED,
+        id:this.id
+      };
+
+      this.axios.post("meal/update", mealUpdate)
+        .then((response) => {
+          console.log("response_edit_data", response);
+
+        })
+        .catch((error) => {
+          this.errorMessage = error.message;
+          console.error("There was an error!", error);
+        });
+        this.$emit("closeSidebar");
+    },
+
     submit() {
       this.$emit("closeSidebar");
     },
