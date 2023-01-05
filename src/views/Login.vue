@@ -222,8 +222,8 @@ export default {
   data() {
     return {
       status: '',
-      password:"mitchellS@12345",//'mitchellS@12345',
-      userEmail:"mitchell-admin1@gmail.com",//'mitchell-admin1@gmail.com',
+      password:"",
+      userEmail:"",
       sideImg: require('@/assets/images/pages/login-v2.svg'),
       // validation rulesimport store from '@/store/index'
       required,
@@ -255,7 +255,7 @@ export default {
       this.$refs.loginValidation.validate().then(success => {
         if (success) {
           //if sucess then first call API
-          let input = {'email':"mitchell-admin1@gmail.com",'password':"mitchellS@12345"}
+           let input = {email:this.userEmail,password:this.password}
          
            //axios function for call API
           axios.post("https://zignuts.dev/es-summer-quote-backend/api/v1/login",input)

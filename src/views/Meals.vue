@@ -6,6 +6,7 @@
       @closeSidebar="SideForm = !SideForm"
       :formHeading="heading"
       :geteditvalue="geteditvalue"
+      @loadData="ListApi"
     ></addForm>
     <b-card no-body class="mb-0">
       <div class="m-2">
@@ -167,6 +168,8 @@ export default {
           this.errorMessage = error.message;
           console.error("There was an error!", error);
         });
+        this.ListApi();
+       
     },
     //Edit Data API...
     EditData(singleMeal) {
