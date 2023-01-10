@@ -1,45 +1,53 @@
  <template>
   <div>
-    <addForm
+    <!-- open form component for Add-Edit Meal -->
+    <addEditMeal
       :isActive="SideForm"
       :items="items"
       @closeSidebar="SideForm = !SideForm"
       :formHeading="heading"
       :geteditvalue="geteditvalue"
-      @loadData="ListApi"
-    ></addForm>
+      @loadData="ListMeal"
+    ></addEditMeal>
+
     <b-card no-body class="mb-0">
       <div class="m-2">
         <b-row>
-          <!-- Search -->
-          <b-col cols="12">
+          <b-col cols="3">
+            <h3 class="mt-1">Meal Listing</h3>
+          </b-col>
+          <b-col cols="9">
             <div class="d-flex align-items-center justify-content-end">
-              <!-- <router-link to="/add"> -->
+              <!-- button for Add meal -->
               <b-button variant="primary">
                 <span class="text-nowrap" @click="openform()">Add Meals</span>
               </b-button>
-              <!-- </router-link> -->
             </div>
           </b-col>
         </b-row>
       </div>
 
-      <b-table ref="refUserListTable" :items="items" :fields="fields">
+      <b-table :items="items" :fields="fields" responsive>
         <template #cell(actions)="data">
-          <!--="data" -->
-          <!-- <router-link :to="'/edit/'+ data.item.id">  -->
+          <!-- button for Edit Meal -->
           <feather-icon
-            class="ml-1 cursor-pointer text-success"
-            icon="Edit2Icon"
+            class="cursor-pointer text-success"
+            icon="EditIcon"
             size="16"
-            @click="EditData(data.item.id)"
+            @click="EditMeal(data.item.id)"
           />
-          <!-- </router-link> -->
+          <!-- button For Delete Meal -->
           <feather-icon
             class="ml-1 cursor-pointer text-danger"
             icon="Trash2Icon"
             size="16"
-            @click="deleteData(data.item.id)"
+            @click="deleteMeal(data.item.id)"
+          />
+          <feather-icon
+            class="ml-1 cursor-pointer text-danger"
+            icon="EyeIcon"
+            size="16"
+            @click="viewMealData(data.item.id)"
           />
         </template>
       </b-table>
@@ -47,22 +55,9 @@
   </div>
 </template>
 <script>
-import {
-  BCard,
-  BRow,
-  BCol,
-  BFormInput,
-  BButton,
-  BTable,
-  BMedia,
-  BAvatar,
-  BLink,
-  BBadge,
-  BDropdown,
-  BDropdownItem,
-  BPagination,
-} from "bootstrap-vue";
-import AddForm from "../components/AddForm.vue";
+import { BCard, BRow, BCol, BFormInput, BButton, BTable } from "bootstrap-vue";
+import AddEditMeal from "../components/AddEditMeal.vue";
+import ToastificationContent from '@core/components/toastification/ToastificationContent.vue'
 export default {
   components: {
     BCard,
@@ -71,14 +66,8 @@ export default {
     BFormInput,
     BButton,
     BTable,
-    BMedia,
-    BAvatar,
-    BLink,
-    BBadge,
-    BDropdown,
-    BDropdownItem,
-    BPagination,
-    AddForm,
+
+    AddEditMeal,
   },
   data() {
     return {
@@ -86,14 +75,16 @@ export default {
         {
           key: "actions",
           label: "Actions",
-        },
-        {
-          key: "type",
-          label: "Type",
+          stickyColumn: true,
         },
         {
           key: "restaurant_name",
           label: "Restaurant Name",
+          stickyColumn: true,
+        },
+        {
+          key: "type",
+          label: "Type",
         },
         {
           key: "AED_cost",
@@ -133,12 +124,12 @@ export default {
   },
 
   mounted() {
-    this.ListApi();
+    this.ListMeal();
   },
 
   methods: {
     //table list API ....
-    ListApi() {
+    ListMeal() {
       console.log(this.token);
       // POST request using axios with error handling
       this.axios.defaults.headers.common["Authorization"] =
@@ -155,50 +146,61 @@ export default {
         });
     },
     //delete row API...
-    deleteData(index) {
+    deleteMeal(index) {
       console.log(index);
       this.axios.defaults.headers.common["Authorization"] =
         "Bearer " + this.token;
       this.axios
         .post("meal/delete", { id: index })
         .then((response) => {
-          console.log("response.data", response.data.data.meals);
+          console.log("response_delete_data", response.data.data.meals);
+          this.$toast({
+                component: ToastificationContent,
+                props: {
+                  title: 'Delete Successfully',
+                  icon: 'Trash2Icon',
+                  variant: 'danger',
+                },
+              })
         })
         .catch((error) => {
           this.errorMessage = error.message;
           console.error("There was an error!", error);
         });
-        this.ListApi();
-       
+      this.ListMeal();
     },
-    //Edit Data API...
-    EditData(singleMeal) {
+
+    //get EditMeal Data API...
+    EditMeal(id) {
       this.SideForm = !this.SideForm;
       this.heading = "Edit Meals";
-      console.log("edit", singleMeal);
-      let id = singleMeal;
+      console.log("edit-id", id);
       //get data for edit (get API)
-      console.log("Get_Edit_Data");
       this.axios.defaults.headers.common["Authorization"] =
         "Bearer " + this.token;
       this.axios
         .get("meal/get/" + id)
         .then((response) => {
-          // console.log("response edit data",response.data.data.meal)
           this.geteditvalue = response.data.data.meal;
-          // console.log("main Edit value",this.geteditvalue );
         })
         .catch((error) => {
           this.errorMessage = error.message;
           console.error("There was an error!", error);
         });
     },
+
     //add meals form open function
     openform() {
-      this.geteditvalue=null;
+      this.geteditvalue = null;
       this.SideForm = !this.SideForm;
       this.heading = "Add Meals";
       this.btnname = "Meals";
+    },
+
+    viewMealData(id) {
+      this.$router.push({
+        path: "/viewmealdata/"+id,
+      });
     },
   },
 };

@@ -40,6 +40,48 @@ const router = new VueRouter({
       },
     },
     {
+      path: '/transportation',
+      name: 'Transportation',
+      component: () => import('@/views/Transportation.vue'),
+      meta: {
+        pageTitle: 'Transportation',
+        breadcrumb: [
+          {
+            text: 'Transportation',
+            active: true,
+          },
+        ],
+      },
+    },
+    {
+      path: '/viewmealdata/:id',
+      name: 'ViewMealData',
+      component: () => import('@/views/ViewMealData.vue'),
+      meta: {
+        pageTitle: 'ViewMealData',
+        breadcrumb: [
+          {
+            text: 'ViewMealData',
+            active: true,
+          },
+        ],
+      },
+    },
+    {
+      path: '/transportation/:id',
+      name: 'Transportation Data',
+      component: () => import('@/views/TransportationView.vue'),
+      meta: {
+        pageTitle: 'Transportation Data',
+        breadcrumb: [
+          {
+            text: 'Transportation Data',
+            active: true,
+          },
+        ],
+      },
+    },
+    {
       path: '/',
       name: 'login',
       component: () => import('@/views/Login.vue'),
@@ -60,19 +102,6 @@ const router = new VueRouter({
       redirect: 'error-404',
     },
 
-    //
-// {
-//   path: '/edit/:id',
-//   name: 'EditForm',
-//   component: () => import('../components/EditForm.vue'),
-// },
-// {
-//   path: '/add',
-//   name: 'EditForm',
-//   component: () => import('../components/AddForm.vue'),
-// },
-
-    // ------
   ],
 })
 

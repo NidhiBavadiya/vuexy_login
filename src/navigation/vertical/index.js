@@ -9,4 +9,9 @@ export default [
     route: 'Meals',
     icon: 'FileIcon',
   },
+  {
+    title: 'Transportation',
+    route: 'Transportation',
+    icon: 'TruckIcon',
+  },
 ]

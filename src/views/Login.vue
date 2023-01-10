@@ -256,16 +256,11 @@ export default {
         if (success) {
           //if sucess then first call API
            let input = {email:this.userEmail,password:this.password}
-         
            //axios function for call API
           axios.post("https://zignuts.dev/es-summer-quote-backend/api/v1/login",input)
           .then(response => {
-              console.log(response);
               console.log(response.data.data.token)
-              console.log(response.data.data.token.replace('"',''));
-              let obj={
-                token:response.data.data.token,
-              }
+              let obj={token:response.data.data.token,}
               localStorage.setItem( 'token', JSON.stringify(obj));
               // ----
               // toast massage login success fully
@@ -282,6 +277,14 @@ export default {
             }).catch(error => {
             this.errorMessage = error.message;
             console.error("There was an error!", error);
+            this.$toast({
+                component: ToastificationContent,
+                props: {
+                  title: 'login Fail',
+                  icon: 'EditIcon',
+                  variant: 'danger',
+                },
+              })
           });
         } 
       })

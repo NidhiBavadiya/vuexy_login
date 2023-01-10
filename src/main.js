@@ -5,6 +5,7 @@ import VueCompositionAPI from '@vue/composition-api'
 import router from './router'
 import store from './store'
 import App from './App.vue'
+// import VeeValidate from 'vee-validate';
 
 // mixin
 import './mixins/mixin'
@@ -19,10 +20,12 @@ import '@/libs/toastification'
 // axios 
 import './axios/index'
 
+//vee-validation
+// Vue.use(VeeValidate);
+
 // BSV Plugin Registration
 Vue.use(ToastPlugin)
 Vue.use(ModalPlugin)
-// Vue.use(VueAxios, axios)
 
 // Composition API
 Vue.use(VueCompositionAPI)
